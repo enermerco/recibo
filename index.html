@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Recibo de Pagamento - Arrendamento</title>
   <style>
     body {
@@ -11,66 +11,63 @@
       background-color: #f7f9f7;
       color: #2c3e50;
     }
-
     .recibo {
       border: 2px solid #145A32;
       padding: 20px;
       max-width: 800px;
-      width: 100%;
       margin: auto;
       background-color: #ffffff;
       border-radius: 10px;
       box-sizing: border-box;
     }
-
     h2 {
       text-align: center;
       color: #145A32;
     }
-
     label {
       font-weight: bold;
       color: #145A32;
     }
-
     .campo {
       margin-bottom: 15px;
     }
-
-    input[type="text"],
-    input[type="date"],
-    input[type="number"],
-    select {
-      width: 100%;
-      padding: 8px;
+    input, select {
+      padding: 6px;
       border: 1px solid #ccc;
       border-radius: 5px;
+      font-size: 14px;
+      width: 100%;
       box-sizing: border-box;
     }
-
+    #valor {
+      font-size: 24px;
+      border: none;
+      text-align: center;
+      width: 200px;
+      background-color: transparent;
+      border-bottom: 1px solid #ccc;
+      margin: 0 auto;
+      display: block;
+    }
     .assinatura {
       margin-top: 20px;
       text-align: center;
     }
-
     .linha-assinatura {
-      margin: 5px auto 5px;
+      margin: 10px auto 10px;
       width: 60%;
       border-top: 1px solid #000;
-      height: 2.5cm;
+      height: 8px;
     }
-
     .info-assinatura {
       color: #145A32;
       font-weight: bold;
-      margin-top: -80px;
+      margin-top: -14px;
     }
-
     .botao-pdf {
       text-align: center;
       margin-top: 30px;
     }
-
     button {
       background-color: #145A32;
       color: white;
@@ -80,28 +77,21 @@
       font-size: 16px;
       cursor: pointer;
     }
-
     button:hover {
       background-color: #117a3a;
     }
-
+    .meses-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
     @media (max-width: 600px) {
-      body {
-        margin: 10px;
+      #valor {
+        font-size: 20px;
       }
-
-      .recibo {
-        padding: 15px;
-      }
-
-      input,
-      select {
-        font-size: 16px;
-      }
-
       button {
         width: 100%;
-        font-size: 18px;
       }
     }
   </style>
@@ -112,36 +102,57 @@
 
     <div class="campo">
       <label>Número do Recibo:</label>
-      <input type="text" name="numero_recibo" id="numero_recibo" readonly>
+      <input type="text" id="numero_recibo" readonly>
     </div>
+
     <div class="campo">
       <label>Data:</label>
       <input type="date" name="data">
     </div>
-    <div class="campo">
-      <label>Valor (R$):</label>
-      <input type="number" name="valor" step="0.01">
+
+    <div class="campo" style="text-align: center;">
+      <label>Valor:</label>
+      <input type="text" id="valor" maxlength="10">
     </div>
 
     <hr style="margin: 20px 0; border-color: #145A32;">
 
     <div class="campo">
       <label>Nome do Pagador:</label>
-      <select id="pagador" name="pagador">
+      <select id="pagador">
         <option value="Clube Do KW">Clube Do KW</option>
         <option value="Enermerco FULL">Enermerco FULL</option>
       </select>
     </div>
+
     <div class="campo">
       <label>CNPJ do Pagador:</label>
-      <input type="text" name="cnpj_pagador" id="cnpj_pagador" readonly>
+      <input type="text" id="cnpj_pagador" readonly>
     </div>
-    <div class="campo">
-      <label>Mês de Referência (arrendamento pago):</label>
-      <input type="text" name="mes_referencia" placeholder="Ex: Maio/2025">
+
+    <div class="campo" style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px;">
+      <label>Ano:</label>
+      <select name="ano_referencia" id="ano_referencia" style="width: auto;"></select>
+
+      <label style="margin-left: 15px;">Mês(es) de Referência:</label>
+      <div class="meses-container">
+        <label><input type="checkbox" value="Jan"> Jan</label>
+        <label><input type="checkbox" value="Fev"> Fev</label>
+        <label><input type="checkbox" value="Mar"> Mar</label>
+        <label><input type="checkbox" value="Abr"> Abr</label>
+        <label><input type="checkbox" value="Mai"> Mai</label>
+        <label><input type="checkbox" value="Jun"> Jun</label>
+        <label><input type="checkbox" value="Jul"> Jul</label>
+        <label><input type="checkbox" value="Ago"> Ago</label>
+        <label><input type="checkbox" value="Set"> Set</label>
+        <label><input type="checkbox" value="Out"> Out</label>
+        <label><input type="checkbox" value="Nov"> Nov</label>
+        <label><input type="checkbox" value="Dez"> Dez</label>
+      </div>
     </div>
+
     <div class="campo">
-      <label>Data de Assinatura do Contrato Arrendamento:</label>
+      <label>Data de Assinatura do Arrendamento:</label>
       <input type="date" name="data_assinatura">
     </div>
 
@@ -151,6 +162,7 @@
       <label>Nome do Beneficiário:</label>
       <input type="text" id="beneficiario" name="beneficiario">
     </div>
+
     <div class="campo">
       <label>CNPJ do Beneficiário:</label>
       <input type="text" id="cnpj_beneficiario" name="cnpj_beneficiario">
@@ -167,13 +179,34 @@
     <button onclick="window.print()">Salvar em PDF</button>
   </div>
 
+  <!-- Scripts -->
   <script>
+    // Número do recibo automático
+    const numeroRecibo = document.getElementById('numero_recibo');
+    const agora = new Date();
+    const numero = 'REC' + agora.getFullYear() + 
+      String(agora.getMonth()+1).padStart(2, '0') +
+      String(agora.getDate()).padStart(2, '0') +
+      String(agora.getHours()).padStart(2, '0') +
+      String(agora.getMinutes()).padStart(2, '0') +
+      String(agora.getSeconds()).padStart(2, '0');
+    numeroRecibo.value = numero;
+
+    // Pagador → CNPJ automático
+    const pagador = document.getElementById('pagador');
+    const cnpjPagador = document.getElementById('cnpj_pagador');
+    function atualizarCNPJ() {
+      cnpjPagador.value = pagador.value === "Clube Do KW"
+        ? "55.178.444/0001-03"
+        : "56.961.593/0001-07";
+    }
+    pagador.addEventListener('change', atualizarCNPJ);
+    atualizarCNPJ();
+
+    // Beneficiário automático na assinatura
     const beneficiario = document.getElementById('beneficiario');
     const cnpjBeneficiario = document.getElementById('cnpj_beneficiario');
     const infoAssinatura = document.getElementById('info_assinatura');
-    const numeroRecibo = document.getElementById('numero_recibo');
-    const pagador = document.getElementById('pagador');
-    const cnpjPagador = document.getElementById('cnpj_pagador');
 
     function atualizarAssinatura() {
       const nome = beneficiario.value;
@@ -181,24 +214,43 @@
       infoAssinatura.textContent = `${nome} - CNPJ: ${cnpj}`;
     }
 
-    function gerarNumeroRecibo() {
-      const now = new Date();
-      const numero = `REC${now.getFullYear()}${(now.getMonth()+1).toString().padStart(2,'0')}${now.getDate().toString().padStart(2,'0')}${now.getHours().toString().padStart(2,'0')}${now.getMinutes().toString().padStart(2,'0')}${now.getSeconds().toString().padStart(2,'0')}`;
-      numeroRecibo.value = numero;
-    }
-
-    function atualizarCNPJPagador() {
-      const cnpj = pagador.value === "Clube Do KW" ? "55.178.444/0001-03" : "56.961.593/0001-07";
-      cnpjPagador.value = cnpj;
-    }
-
     beneficiario.addEventListener('input', atualizarAssinatura);
     cnpjBeneficiario.addEventListener('input', atualizarAssinatura);
-    pagador.addEventListener('change', atualizarCNPJPagador);
 
-    // Inicializações
-    gerarNumeroRecibo();
-    atualizarCNPJPagador();
+    // Máscara de CNPJ do Beneficiário
+    function aplicarMascaraCNPJ(input) {
+      input.addEventListener('input', function () {
+        let valor = input.value.replace(/\D/g, '');
+        if (valor.length > 14) valor = valor.slice(0, 14);
+        valor = valor.replace(/^(\d{2})(\d)/, '$1.$2');
+        valor = valor.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
+        valor = valor.replace(/\.(\d{3})(\d)/, '.$1/$2');
+        valor = valor.replace(/(\d{4})(\d)/, '$1-$2');
+        input.value = valor;
+      });
+    }
+    aplicarMascaraCNPJ(cnpjBeneficiario);
+
+    // Preenche anos no select
+    const anoSelect = document.getElementById('ano_referencia');
+    const anoAtual = new Date().getFullYear();
+    for (let i = 0; i < 5; i++) {
+      const option = document.createElement('option');
+      option.value = anoAtual + i;
+      option.text = anoAtual + i;
+      anoSelect.appendChild(option);
+    }
+
+    // Máscara de valor
+    const campoValor = document.getElementById("valor");
+    campoValor.addEventListener("input", function () {
+      let v = campoValor.value.replace(/\D/g, "");
+      v = v.padStart(3, "0");
+      let int = v.slice(0, -2);
+      let dec = v.slice(-2);
+      int = int.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      campoValor.value = `${int},${dec}`;
+    });
   </script>
 </body>
 </html>

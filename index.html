@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Recibo de Pagamento - Arrendamento</title>
+  <style>
+    body {
+      font-family: Calibri, sans-serif;
+      margin: 20px;
+      background-color: #f7f9f7;
+      color: #2c3e50;
+    }
+
+    .recibo {
+      border: 2px solid #145A32;
+      padding: 20px;
+      max-width: 800px;
+      width: 100%;
+      margin: auto;
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-sizing: border-box;
+    }
+
+    h2 {
+      text-align: center;
+      color: #145A32;
+    }
+
+    label {
+      font-weight: bold;
+      color: #145A32;
+    }
+
+    .campo {
+      margin-bottom: 15px;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    .assinatura {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .linha-assinatura {
+      margin: 5px auto 5px;
+      width: 60%;
+      border-top: 1px solid #000;
+      height: 2.5cm;
+    }
+
+    .info-assinatura {
+      color: #145A32;
+      font-weight: bold;
+      margin-top: -80px;
+    }
+
+    .botao-pdf {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    button {
+      background-color: #145A32;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #117a3a;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        margin: 10px;
+      }
+
+      .recibo {
+        padding: 15px;
+      }
+
+      input[type="text"],
+      input[type="date"],
+      input[type="number"] {
+        font-size: 16px;
+      }
+
+      button {
+        width: 100%;
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="recibo" id="recibo">
+    <h2>Recibo de Pagamento - Arrendamento</h2>
+
+    <div class="campo">
+      <label>Número do Recibo:</label>
+      <input type="text" name="numero_recibo">
+    </div>
+    <div class="campo">
+      <label>Data:</label>
+      <input type="date" name="data">
+    </div>
+    <div class="campo">
+      <label>Valor (R$):</label>
+      <input type="number" name="valor" step="0.01">
+    </div>
+
+    <hr style="margin: 20px 0; border-color: #145A32;">
+
+    <div class="campo">
+      <label>Nome do Pagador:</label>
+      <input type="text" name="pagador">
+    </div>
+    <div class="campo">
+      <label>CNPJ do Pagador:</label>
+      <input type="text" name="cnpj_pagador">
+    </div>
+    <div class="campo">
+      <label>Mês de Referência (arrendamento pago):</label>
+      <input type="text" name="mes_referencia" placeholder="Ex: Maio/2025">
+    </div>
+    <div class="campo">
+      <label>Data de Assinatura do Arrendamento:</label>
+      <input type="date" name="data_assinatura">
+    </div>
+
+    <hr style="margin: 20px 0; border-color: #145A32;">
+
+    <div class="campo">
+      <label>Nome do Beneficiário:</label>
+      <input type="text" id="beneficiario" name="beneficiario">
+    </div>
+    <div class="campo">
+      <label>CNPJ do Beneficiário:</label>
+      <input type="text" id="cnpj_beneficiario" name="cnpj_beneficiario">
+    </div>
+
+    <div class="assinatura">
+      <div style="height: 60px;"></div>
+      <div class="linha-assinatura"></div>
+      <div class="info-assinatura" id="info_assinatura"></div>
+    </div>
+  </div>
+
+  <div class="botao-pdf">
+    <button onclick="window.print()">Salvar em PDF</button>
+  </div>
+
+  <script>
+    const beneficiario = document.getElementById('beneficiario');
+    const cnpjBeneficiario = document.getElementById('cnpj_beneficiario');
+    const infoAssinatura = document.getElementById('info_assinatura');
+
+    function atualizarAssinatura() {
+      const nome = beneficiario.value;
+      const cnpj = cnpjBeneficiario.value;
+      infoAssinatura.textContent = `${nome} - CNPJ: ${cnpj}`;
+    }
+
+    beneficiario.addEventListener('input', atualizarAssinatura);
+    cnpjBeneficiario.addEventListener('input', atualizarAssinatura);
+  </script>
+</body>
+</html>

@@ -39,7 +39,8 @@
 
     input[type="text"],
     input[type="date"],
-    input[type="number"] {
+    input[type="number"],
+    select {
       width: 100%;
       padding: 8px;
       border: 1px solid #ccc;
@@ -93,9 +94,8 @@
         padding: 15px;
       }
 
-      input[type="text"],
-      input[type="date"],
-      input[type="number"] {
+      input,
+      select {
         font-size: 16px;
       }
 
@@ -112,7 +112,7 @@
 
     <div class="campo">
       <label>Número do Recibo:</label>
-      <input type="text" name="numero_recibo">
+      <input type="text" name="numero_recibo" id="numero_recibo" readonly>
     </div>
     <div class="campo">
       <label>Data:</label>
@@ -127,18 +127,21 @@
 
     <div class="campo">
       <label>Nome do Pagador:</label>
-      <input type="text" name="pagador">
+      <select id="pagador" name="pagador">
+        <option value="Clube Do KW">Clube Do KW</option>
+        <option value="Enermerco FULL">Enermerco FULL</option>
+      </select>
     </div>
     <div class="campo">
       <label>CNPJ do Pagador:</label>
-      <input type="text" name="cnpj_pagador">
+      <input type="text" name="cnpj_pagador" id="cnpj_pagador" readonly>
     </div>
     <div class="campo">
       <label>Mês de Referência (arrendamento pago):</label>
       <input type="text" name="mes_referencia" placeholder="Ex: Maio/2025">
     </div>
     <div class="campo">
-      <label>Data de  Assinatura do Contrato de Arrendamento:</label>
+      <label>Data de Assinatura do Contrato Arrendamento:</label>
       <input type="date" name="data_assinatura">
     </div>
 
@@ -168,6 +171,9 @@
     const beneficiario = document.getElementById('beneficiario');
     const cnpjBeneficiario = document.getElementById('cnpj_beneficiario');
     const infoAssinatura = document.getElementById('info_assinatura');
+    const numeroRecibo = document.getElementById('numero_recibo');
+    const pagador = document.getElementById('pagador');
+    const cnpjPagador = document.getElementById('cnpj_pagador');
 
     function atualizarAssinatura() {
       const nome = beneficiario.value;
@@ -175,8 +181,24 @@
       infoAssinatura.textContent = `${nome} - CNPJ: ${cnpj}`;
     }
 
+    function gerarNumeroRecibo() {
+      const now = new Date();
+      const numero = `REC${now.getFullYear()}${(now.getMonth()+1).toString().padStart(2,'0')}${now.getDate().toString().padStart(2,'0')}${now.getHours().toString().padStart(2,'0')}${now.getMinutes().toString().padStart(2,'0')}${now.getSeconds().toString().padStart(2,'0')}`;
+      numeroRecibo.value = numero;
+    }
+
+    function atualizarCNPJPagador() {
+      const cnpj = pagador.value === "Clube Do KW" ? "55.178.444/0001-03" : "56.961.593/0001-07";
+      cnpjPagador.value = cnpj;
+    }
+
     beneficiario.addEventListener('input', atualizarAssinatura);
     cnpjBeneficiario.addEventListener('input', atualizarAssinatura);
+    pagador.addEventListener('change', atualizarCNPJPagador);
+
+    // Inicializações
+    gerarNumeroRecibo();
+    atualizarCNPJPagador();
   </script>
 </body>
 </html>

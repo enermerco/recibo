@@ -131,7 +131,7 @@
       font-style: italic;
       color: #145A32;
     }
-    @media print {
+   @media print {
   .botao-pdf {
     display: none;
   }
@@ -155,6 +155,14 @@
     -webkit-appearance: none;
     -moz-appearance: none;
     background-image: none !important;
+  }
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+  }
+  input[type="date"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
   }
   #valor {
     font-size: 18px;

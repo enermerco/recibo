@@ -7,14 +7,14 @@
   <style>
     .marca-dagua {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 400px;
-  transform: translate(-50%, -50%);
-  opacity: 0.05;
+  top: 25px;
+  right: 25px;
+  width: 100px; /* Ajustável conforme necessidade */
+  opacity: 0.08;
   z-index: 0;
   pointer-events: none;
 }
+
 .recibo {
   position: relative; /* necessário para posicionar a marca d’água dentro */
   z-index: 1;
@@ -27,14 +27,16 @@
       color: #2c3e50;
     }
     .recibo {
-      border: 2px solid #145A32;
-      padding: 20px;
-      max-width: 800px;
-      margin: auto;
-      background-color: #ffffff;
-      border-radius: 10px;
-      box-sizing: border-box;
-    }
+  position: relative;
+  z-index: 1;
+  border: 2px solid #145A32;
+  padding: 20px;
+  max-width: 800px;
+  margin: auto;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
     h2 {
       text-align: center;
       color: #145A32;

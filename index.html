@@ -221,8 +221,7 @@
     <div class="campo">
       <label>Nome do Pagador:</label>
       <select id="pagador">
-        <option value="Clube Do KW">Clube Do KW</option>
-        <option value="Enermerco FULL">Enermerco FULL</option>
+        <option value="">Carregando...</option>
       </select>
     </div>
 
@@ -230,6 +229,11 @@
       <label>CNPJ do Pagador:</label>
       <input type="text" id="cnpj_pagador" readonly>
     </div>
+    <div class="campo">
+      <label>Endereço do Pagador:</label>
+      <input type="text" id="endereco_pagador" readonly>
+    </div>
+
 
     <div class="campo" style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px;">
       <label>Ano:</label>
@@ -270,6 +274,11 @@
       <label>CNPJ do Beneficiário:</label>
       <input type="text" id="cnpj_beneficiario" readonly>
     </div>
+    <div class="campo">
+      <label>Endereço do Beneficiário:</label>
+      <input type="text" id="endereco_beneficiario" readonly>
+    </div>
+
 
     <div class="assinatura">
       <div style="height: 60px;"></div>
@@ -295,13 +304,35 @@
 
     const pagador = document.getElementById('pagador');
     const cnpjPagador = document.getElementById('cnpj_pagador');
-    function atualizarCNPJ() {
-      cnpjPagador.value = pagador.value === "Clube Do KW"
-        ? "55.178.444/0001-03"
-        : "56.961.593/0001-07";
-    }
-    pagador.addEventListener('change', atualizarCNPJ);
-    atualizarCNPJ();
+    
+
+    
+    const pagadorSelect = document.getElementById('pagador');
+    const cnpjPagador = document.getElementById('cnpj_pagador');
+    const enderecoPagador = document.getElementById('endereco_pagador');
+
+    fetch('pagador.txt')
+      .then(res => res.text())
+      .then(data => {
+        pagadorSelect.innerHTML = '<option value="">Selecione...</option>';
+        data.trim().split('\n').forEach(linha => {
+          const partes = linha.split('|');
+          const nome = partes[0];
+          const cnpj = partes[1];
+          const endereco = partes[2] || '';
+          const option = document.createElement('option');
+          option.value = JSON.stringify({ cnpj, endereco });
+          option.textContent = nome;
+          pagadorSelect.appendChild(option);
+        });
+      });
+
+    pagadorSelect.addEventListener('change', () => {
+      const dados = JSON.parse(pagadorSelect.value || '{}');
+      cnpjPagador.value = dados.cnpj || '';
+      enderecoPagador.value = dados.endereco || '';
+    });
+
 
     const anoSelect = document.getElementById('ano_referencia');
     const anoAtual = new Date().getFullYear();
@@ -316,14 +347,15 @@
     const cnpjBeneficiarioInput = document.getElementById('cnpj_beneficiario');
     const infoAssinatura = document.getElementById('info_assinatura');
 
-    fetch('beneficiarios.txt')
-      .then(res => res.text())
       .then(data => {
         beneficiarioSelect.innerHTML = '<option value="">Selecione...</option>';
         data.trim().split('\n').forEach(linha => {
-          const [nome, cnpj] = linha.split('|');
+          const partes = linha.split('|');
+          const nome = partes[0];
+          const cnpj = partes[1];
+          const endereco = partes[2] || '';
           const option = document.createElement('option');
-          option.value = cnpj;
+          option.value = JSON.stringify({ cnpj, endereco });
           option.textContent = nome;
           beneficiarioSelect.appendChild(option);
         });
@@ -331,10 +363,12 @@
 
     beneficiarioSelect.addEventListener('change', () => {
       const nome = beneficiarioSelect.options[beneficiarioSelect.selectedIndex].text;
-      const cnpj = beneficiarioSelect.value;
+      const dados = JSON.parse(beneficiarioSelect.value || '{}');
+      const cnpj = dados.cnpj || '';
+      const endereco = dados.endereco || '';
       cnpjBeneficiarioInput.value = cnpj;
+      document.getElementById("endereco_beneficiario").value = endereco;
       infoAssinatura.innerHTML = `${nome}<br><span style="font-weight: normal;">CNPJ: ${cnpj}</span>`;
-
     });
 
     

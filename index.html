@@ -132,35 +132,41 @@
       color: #145A32;
     }
     @media print {
-      .botao-pdf {
-        display: none;
-      }
-      body {
-        font-size: 11px;
-      }
-      h2 {
-        font-size: 18px;
-        margin-bottom: 2px;
-      }
-      h3 {
-        font-size: 14px;
-        margin-top: 2px;
-      }
-      input, select {
-        font-size: 11px;
-        padding: 4px;
-      }
-      #valor {
-        font-size: 18px;
-        width: 160px;
-      }
-      label {
-        font-size: 11px;
-      }
-      .meses-container input:not(:checked) + span {
-        display: none;
-      }
-    }
+  .botao-pdf {
+    display: none;
+  }
+  body {
+    font-size: 11px;
+  }
+  h2 {
+    font-size: 18px;
+    margin-bottom: 2px;
+  }
+  h3 {
+    font-size: 14px;
+    margin-top: 2px;
+  }
+  input, select {
+    font-size: 11px;
+    padding: 4px;
+  }
+  select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: none !important;
+  }
+  #valor {
+    font-size: 18px;
+    width: 160px;
+  }
+  label {
+    font-size: 11px;
+  }
+  .meses-container input:not(:checked) + span {
+    display: none;
+  }
+}
   </style>
 </head>
 <body>

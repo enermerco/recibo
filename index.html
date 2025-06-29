@@ -5,6 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Recibo de Pagamento</title>
   <style>
+    .marca-dagua {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  transform: translate(-50%, -50%);
+  opacity: 0.05;
+  z-index: 0;
+  pointer-events: none;
+}
+.recibo {
+  position: relative; /* necessário para posicionar a marca d’água dentro */
+  z-index: 1;
+}
+
     body {
       font-family: Calibri, sans-serif;
       margin: 20px;
@@ -179,6 +194,7 @@
 </head>
 <body>
   <div class="recibo" id="recibo">
+    <img src="Clube do KW - Logo_tran.png" class="marca-dagua" alt="Marca d'água">
     <h2><strong>recibo de pagamento</strong></h2>
     <h3>ARRENDAMENTO</h3>
 

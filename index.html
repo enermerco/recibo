@@ -304,7 +304,7 @@
       const nome = beneficiarioSelect.options[beneficiarioSelect.selectedIndex].text;
       const cnpj = beneficiarioSelect.value;
       cnpjBeneficiarioInput.value = cnpj;
-      infoAssinatura.textContent = `${nome} - CNPJ: ${cnpj}`;
+      infoAssinatura.innerHTML = `${nome}<br><span style="font-weight: normal;">CNPJ: ${cnpj}</span>`;
     });
 
     

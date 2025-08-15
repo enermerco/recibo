@@ -188,10 +188,12 @@
   label {
     font-size: 11px;
   }
-  .meses-container input:not(:checked) + span {
+  .meses-container input[type="checkbox"]:checked + span {
     font-weight: bold;
-    color: #000;
-    display: none;
+    color: #000 !important;
+    border-color: #000 !important;
+    background-color: transparent !important;
+
   }
 }
   </style>

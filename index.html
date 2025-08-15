@@ -221,8 +221,8 @@
     <div class="campo">
       <label>Nome do Pagador:</label>
       <select id="pagador">
-        <option value="Clube Do KW">Clube Do KW</option>
-        <option value="Enermerco FULL">Enermerco FULL</option>
+        <option value="Clube Do Kilowatt">Clube Do Kilowatt</option>
+        <option value="Clube Do Kilowatt II">Clube Do Kilowatt II</option>
       </select>
     </div>
 
@@ -296,7 +296,7 @@
     const pagador = document.getElementById('pagador');
     const cnpjPagador = document.getElementById('cnpj_pagador');
     function atualizarCNPJ() {
-      cnpjPagador.value = pagador.value === "Clube Do KW"
+      cnpjPagador.value = pagador.value === "Clube Do Kilowatt"
         ? "55.178.444/0001-03"
         : "56.961.593/0001-07";
     }

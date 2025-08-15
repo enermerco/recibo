@@ -1,6 +1,6 @@
-Clube do KW|55.178.444/0001-03|teste
-Enermerco FULL|56.961.593/0001-07|teste
-SolarTech Energia|12.345.678/0001-99|teste
+Clube do KW|55.178.444/0001-03
+Enermerco FULL|56.961.593/0001-07
+SolarTech Energia|12.345.678/0001-99
 Teste1|00.000.000/0000-00|teste
 Teste2|00.000.000/0000-00|teste
 Teste3|00.000.000/0000-00|teste

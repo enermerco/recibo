@@ -6,13 +6,19 @@
   <title>Recibo de Pagamento</title>
   <style>
     .marca-dagua {
-      position: absolute;
-      top: 25px;
-      right: 25px;
-      width: 50px;
-      z-index: 0;
-      pointer-events: none;
-    }
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  width: 50px; /* Ajustável conforme necessidade */
+  /* opacity: 0.08;*/
+  z-index: 0;
+  pointer-events: none;
+}
+
+.recibo {
+  position: relative; /* necessário para posicionar a marca d’água dentro */
+  z-index: 1;
+}
 
     body {
       font-family: Calibri, sans-serif;
@@ -20,19 +26,17 @@
       background-color: #f7f9f7;
       color: #2c3e50;
     }
-
     .recibo {
-      position: relative;
-      z-index: 1;
-      border: 2px solid #145A32;
-      padding: 24px; /* margem interna um pouco maior */
-      max-width: 800px;
-      margin: auto;
-      background-color: #ffffff;
-      border-radius: 10px;
-      box-sizing: border-box;
-    }
-
+  position: relative;
+  z-index: 1;
+  border: 2px solid #145A32;
+  padding: 20px;
+  max-width: 800px;
+  margin: auto;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
     h2 {
       text-align: center;
       color: #145A32;
@@ -73,20 +77,6 @@
       margin: 0 auto;
       border: 1px solid #ccc;
     }
-
-    /* Valor por extenso: permitir quebra completa do texto */
-    #valor_extenso {
-      margin-top: 6px;
-      font-size: 13px;
-      font-style: italic;
-      color: #145A32;
-      line-height: 1.4;
-      white-space: normal;
-      word-wrap: break-word;
-      overflow-wrap: anywhere;
-      max-width: 100%;
-    }
-
     .assinatura {
       margin-top: 20px;
       text-align: center;
@@ -152,32 +142,58 @@
       background-color: #dfeee4;
       border-color: #117a3a;
     }
-
-    @media print {
-      @page { margin: 15mm; } /* aumenta a margem da página impressa */
-      .botao-pdf { display: none; }
-      body { font-size: 11px; margin: 0; }
-      h2 { font-size: 18px; margin-bottom: 2px; }
-      h3 { font-size: 14px; margin-top: 2px; }
-      input, select { font-size: 11px; padding: 4px; }
-      select {
-        appearance: none; -webkit-appearance: none; -moz-appearance: none;
-        background-image: none !important;
-      }
-      input[type="date"]::-webkit-calendar-picker-indicator { display: none; }
-      input[type="date"] {
-        appearance: none; -webkit-appearance: none; -moz-appearance: none;
-      }
-      #valor { font-size: 18px; width: 160px; }
-      label { font-size: 11px; }
-      .meses-container input:not(:checked) + span {
-        font-weight: bold; color: #000; display: none;
-      }
-      #valor_extenso {
-        font-size: 12px;
-        line-height: 1.4;
-      }
+    #valor_extenso {
+      margin-top: 3px;
+      font-size: 12px;
+      font-style: italic;
+      color: #145A32;
     }
+   @media print {
+  .botao-pdf {
+    display: none;
+  }
+  body {
+    font-size: 11px;
+  }
+  h2 {
+    font-size: 18px;
+    margin-bottom: 2px;
+  }
+  h3 {
+    font-size: 14px;
+    margin-top: 2px;
+  }
+  input, select {
+    font-size: 11px;
+    padding: 4px;
+  }
+  select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: none !important;
+  }
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+  }
+  input[type="date"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  }
+  #valor {
+    font-size: 18px;
+    width: 160px;
+  }
+  label {
+    font-size: 11px;
+  }
+ .meses-container input:not(:checked) + span {
+    font-weight: bold;
+    color: #000;
+    display: none;
+  }
+}
   </style>
 </head>
 <body>
@@ -199,7 +215,7 @@
     <div class="campo" style="text-align: center;">
       <label>Valor (R$):</label>
       <input type="text" id="valor" maxlength="10" />
-      <div id="valor_extenso">zero reais</div>
+      <div id="valor_extenso">zero real</div>
     </div>
 
     <hr style="margin: 20px 0; border-color: #145A32;">
@@ -269,7 +285,6 @@
   </div>
 
   <script>
-    /* Número do recibo */
     const numeroRecibo = document.getElementById('numero_recibo');
     const agora = new Date();
     const numero = 'REC' + agora.getFullYear() +
@@ -280,7 +295,6 @@
       String(agora.getSeconds()).padStart(2, '0');
     numeroRecibo.value = numero;
 
-    /* CNPJ do pagador */
     const pagador = document.getElementById('pagador');
     const cnpjPagador = document.getElementById('cnpj_pagador');
     function atualizarCNPJ() {
@@ -291,6 +305,133 @@
     pagador.addEventListener('change', atualizarCNPJ);
     atualizarCNPJ();
 
-    /* Ano de referência: ano atual e próximos 4 */
     const anoSelect = document.getElementById('ano_referencia');
-    const anoAtual = new Date().get
+    const anoAtual = new Date().getFullYear();
+    for (let i = 0; i < 5; i++) {
+      const option = document.createElement('option');
+      option.value = anoAtual + i;
+      option.text = anoAtual + i;
+      anoSelect.appendChild(option);
+    }
+
+    const beneficiarioSelect = document.getElementById('beneficiario_select');
+    const cnpjBeneficiarioInput = document.getElementById('cnpj_beneficiario');
+    const infoAssinatura = document.getElementById('info_assinatura');
+
+    fetch('beneficiarios.txt')
+      .then(res => res.text())
+      .then(data => {
+        beneficiarioSelect.innerHTML = '<option value="">Selecione...</option>';
+        data.trim().split('\n').forEach(linha => {
+          const [nome, cnpj] = linha.split('|');
+          const option = document.createElement('option');
+          option.value = cnpj;
+          option.textContent = nome;
+          beneficiarioSelect.appendChild(option);
+        });
+      });
+
+    beneficiarioSelect.addEventListener('change', () => {
+      const nome = beneficiarioSelect.options[beneficiarioSelect.selectedIndex].text;
+      const cnpj = beneficiarioSelect.value;
+      cnpjBeneficiarioInput.value = cnpj;
+      infoAssinatura.innerHTML = `${nome}<br><span style="font-weight: normal;">CNPJ: ${cnpj}</span>`;
+
+    });
+
+    
+    const campoValor = document.getElementById("valor");
+    const divExtenso = document.getElementById("valor_extenso");
+
+    function numeroParaExtenso(valor) {
+      const unidades = ["", "um", "dois", "três", "quatro", "cinco", "seis", "sete", "oito", "nove"];
+      const especiais = ["dez", "onze", "doze", "treze", "quatorze", "quinze", "dezesseis", "dezessete", "dezoito", "dezenove"];
+      const dezenas = ["", "", "vinte", "trinta", "quarenta", "cinquenta", "sessenta", "setenta", "oitenta", "noventa"];
+      const centenas = ["", "cento", "duzentos", "trezentos", "quatrocentos", "quinhentos", "seiscentos", "setecentos", "oitocentos", "novecentos"];
+
+      function converteCentena(num) {
+        if (num === 0) return '';
+        if (num === 100) return 'cem';
+        let c = Math.floor(num / 100);
+        let d = Math.floor((num % 100) / 10);
+        let u = num % 10;
+        let texto = [];
+
+        if (c > 0) texto.push(centenas[c]);
+        if (d === 1 && u > 0) {
+          texto.push(especiais[u]);
+        } else {
+          if (d > 0) texto.push(dezenas[d]);
+          if (u > 0) texto.push(unidades[u]);
+        }
+
+        return texto.join(' e ');
+      }
+
+      let [reais, centavos] = valor.split(',');
+      reais = reais.replace(/\./g, '');
+      let numReais = parseInt(reais || '0');
+      let numCentavos = parseInt(centavos || '00');
+
+      let extenso = '';
+
+      if (numReais > 0) {
+        extenso += `${converteCentena(numReais)} ${numReais === 1 ? 'real' : 'reais'}`;
+      }
+
+      if (numCentavos > 0) {
+        if (extenso) extenso += ' e ';
+        extenso += `${converteCentena(numCentavos)} centavo${numCentavos > 1 ? 's' : ''}`;
+      }
+
+      if (!extenso) extenso = 'zero reais';
+
+      return extenso;
+    }
+
+    campoValor.addEventListener("input", function () {
+      let v = campoValor.value.replace(/[^\d]/g, "");
+
+      v = v.replace(/^0+/, '');
+
+      if (v.length === 0) {
+        v = "000";
+      } else if (v.length === 1) {
+        v = "00" + v;
+      } else if (v.length === 2) {
+        v = "0" + v;
+      }
+
+      if (v.length > 7) {
+        v = v.slice(0, 7);
+      }
+
+      let intPart = v.slice(0, -2);
+      let decPart = v.slice(-2);
+
+      intPart = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+      const valorFormatado = intPart + "," + decPart;
+
+      campoValor.value = valorFormatado;
+      divExtenso.textContent = numeroParaExtenso(valorFormatado);
+    });
+
+    campoValor.addEventListener("keydown", function(e) {
+      const invalidKeys = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"];
+      if (invalidKeys.includes(e.key)) {
+        e.preventDefault();
+      }
+    });
+
+    campoValor.addEventListener("click", function(e) {
+      const len = campoValor.value.length;
+      campoValor.setSelectionRange(len, len);
+    });
+
+    window.addEventListener("DOMContentLoaded", () => {
+      campoValor.dispatchEvent(new Event("input"));
+    });
+</script>
+</body>
+</html>

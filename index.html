@@ -349,51 +349,62 @@
     const campoValor = document.getElementById("valor");
     const divExtenso = document.getElementById("valor_extenso");
 
-    function numeroParaExtenso(valor) {
-      const unidades = ["", "um", "dois", "três", "quatro", "cinco", "seis", "sete", "oito", "nove"];
-      const especiais = ["dez", "onze", "doze", "treze", "quatorze", "quinze", "dezesseis", "dezessete", "dezoito", "dezenove"];
-      const dezenas = ["", "", "vinte", "trinta", "quarenta", "cinquenta", "sessenta", "setenta", "oitenta", "noventa"];
-      const centenas = ["", "cento", "duzentos", "trezentos", "quatrocentos", "quinhentos", "seiscentos", "setecentos", "oitocentos", "novecentos"];
+function numeroParaExtenso(valor) {
+  const unidades = ["", "um", "dois", "três", "quatro", "cinco", "seis", "sete", "oito", "nove"];
+  const especiais = ["dez", "onze", "doze", "treze", "quatorze", "quinze", "dezesseis", "dezessete", "dezoito", "dezenove"];
+  const dezenas = ["", "", "vinte", "trinta", "quarenta", "cinquenta", "sessenta", "setenta", "oitenta", "noventa"];
+  const centenas = ["", "cento", "duzentos", "trezentos", "quatrocentos", "quinhentos", "seiscentos", "setecentos", "oitocentos", "novecentos"];
 
-      function converteCentena(num) {
-        if (num === 0) return '';
-        if (num === 100) return 'cem';
-        let c = Math.floor(num / 100);
-        let d = Math.floor((num % 100) / 10);
-        let u = num % 10;
-        let texto = [];
+  function converteCentena(num) {
+    if (num === 0) return '';
+    if (num === 100) return 'cem';
+    let c = Math.floor(num / 100);
+    let d = Math.floor((num % 100) / 10);
+    let u = num % 10;
+    let texto = [];
 
-        if (c > 0) texto.push(centenas[c]);
-        if (d === 1 && u > 0) {
-          texto.push(especiais[u]);
-        } else {
-          if (d > 0) texto.push(dezenas[d]);
-          if (u > 0) texto.push(unidades[u]);
-        }
-
-        return texto.join(' e ');
-      }
-
-      let [reais, centavos] = valor.split(',');
-      reais = reais.replace(/\./g, '');
-      let numReais = parseInt(reais || '0');
-      let numCentavos = parseInt(centavos || '00');
-
-      let extenso = '';
-
-      if (numReais > 0) {
-        extenso += `${converteCentena(numReais)} ${numReais === 1 ? 'real' : 'reais'}`;
-      }
-
-      if (numCentavos > 0) {
-        if (extenso) extenso += ' e ';
-        extenso += `${converteCentena(numCentavos)} centavo${numCentavos > 1 ? 's' : ''}`;
-      }
-
-      if (!extenso) extenso = 'zero reais';
-
-      return extenso;
+    if (c > 0) texto.push(centenas[c]);
+    if (d === 1) {
+      texto.push(especiais[u]); // 10..19
+    } else {
+      if (d > 0) texto.push(dezenas[d]);
+      if (u > 0) texto.push(unidades[u]);
     }
+    return texto.join(' e ');
+  }
+
+  // separa reais e centavos
+  let [reais, centavos] = valor.split(',');
+  reais = (reais || '0').replace(/\./g, '');
+  let numReais = parseInt(reais, 10) || 0;
+  let numCentavos = parseInt(centavos || '00', 10) || 0;
+
+  let extenso = '';
+
+  // trata milhares (até 999.999)
+  if (numReais > 0) {
+    const milhares = Math.floor(numReais / 1000);
+    const centenasParte = numReais % 1000;
+
+    if (milhares > 0) {
+      extenso += (milhares === 1 ? 'mil' : `${converteCentena(milhares)} mil`);
+    }
+    if (centenasParte > 0) {
+      if (extenso) extenso += ' ';
+      extenso += converteCentena(centenasParte);
+    }
+    extenso += (numReais === 1 ? ' real' : ' reais');
+  }
+
+  if (numCentavos > 0) {
+    if (extenso) extenso += ' e ';
+    extenso += `${converteCentena(numCentavos)} centavo${numCentavos > 1 ? 's' : ''}`;
+  }
+
+  if (!extenso) extenso = 'zero reais';
+  return extenso;
+}
+
 
     campoValor.addEventListener("input", function () {
       let v = campoValor.value.replace(/[^\d]/g, "");
